@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0;
+            background-color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;    
+            align-items: center;       
+            gap: 2px;
+            margin-top: 60px;
+            margin-bottom: 110px;
+            width: 100%;
+            max-width: 480px; /* Standard mobile app container width */
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        .page-header {
+            position: fixed;            
+            top: 0;                     
+            left: 50%;                  
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;               
+            height: 45px;
+            padding: 10px 16px;
+            box-sizing: border-box;
+            z-index: 2000;              
+            background-color: rgba(255, 255, 255);
+            display: flex;
+            justify-content: center;    
+            align-items: center;        
+        }
+
+        .page-title {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .menu-btn {
+            position: absolute;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 20px;            
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            opacity: 0.8;
+        }
+
+        /* TAB VIEWS CONTROLLER */
+        .tab-view {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tab-view.active-view {
+            display: flex;
+        }
+
+        /* HOME PAGE STYLING ELEMENTS */
+        .welcome-section {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: -22px;
+            margin-bottom: 20px;
+        }
+
+        .user-info h2 {
+            margin: 0;
+            font-size: 16px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        .user-info h1 {
+            margin: 4px 0 0 0;
+            font-size: 22px;
+            font-weight: 800;
+            color: #131313;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #f2f2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e62d2d;
+            font-size: 18px;
+            border: 2px solid #e62d2d;
+        }
+
+        .balance-card {
+            width: 100%;
+            background: linear-gradient(135deg, #1e1e24 0%, #33333a 100%);
+            border-radius: 20px;
+            padding: 24px;
+            box-sizing: border-box;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            margin-bottom: 25px;
+        }
+
+        .balance-label {
+            font-size: 13px;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 8px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .balance-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .meta-item span {
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .meta-item strong {
+            font-size: 14px;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 12px 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1px solid #eaeaea;
+        }
+
+        .action-item:hover {
+            background: #f0f0f2;
+        }
+
+        .action-item i {
+            font-size: 20px;
+            color: #e62d2d;
+            margin-bottom: 8px;
+        }
+
+        .action-item span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #131313;
+        }
+
+        .section-header a {
+            color: #e62d2d;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .recent-transactions {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .transaction-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid #eee;
+        }
+
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tx-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #fff5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e62d2d;
+            font-size: 16px;
+        }
+
+        .tx-icon.income {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .tx-details p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .tx-details span {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .tx-right {
+            text-align: right;
+        }
+
+        .tx-amount {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .tx-amount.positive {
+            color: #16a34a;
+        }
+
+
+        /* BUY VIEW EXTRA CUSTOM STYLES */
+        .search-container {
+            width: 100%;
+            position: relative;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #e62d2d;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 15px;
+        }
+
+        .buy-section-title {
+            width: 100%;
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 15px 0 10px 4px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .service-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f7f4f4;
+            border-radius: 16px;
+            padding: 14px 4px 10px 4px;
+            cursor: pointer;
+            border: 1px solid #efefef;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .service-item:active {
+            transform: scale(0.95);
+        }
+
+        .service-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        /* PalmPay/Bank App Color Coding Schema */
+        .service-icon.telecom { background-color: #eff6ff; color: #2563eb; }
+        .service-icon.utility { background-color: #fef3c7; color: #d97706; }
+        .service-icon.lifestyle { background-color: #f3e8ff; color: #9333ea; }
+
+        .service-item span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Small notification tags on buttons */
+        .service-tag {
+            position: absolute;
+            top: -6px;
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 20px;
+            white-space: nowrap;
+            background: #64748b;
+            color: white;
+        }
+
+        .service-tag.bonus { background: #dc2626; }
+        .service-tag.popular { background: #16a34a; }
+
+        .promo-banner-card {
+            width: 100%;
+            background: linear-gradient(135deg, #e62d2d 0%, #991b1b 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 15px;
+            box-sizing: border-box;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(230, 45, 45, 0.2);
+        }
+
+        .promo-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .promo-info p {
+            margin: 0;
+            font-size: 11px;
+            opacity: 0.9;
+            line-height: 1.4;
+            max-width: 85%;
+        }
+
+        .promo-illustration {
+            font-size: 32px;
+            opacity: 0.3;
+            transform: rotate(15deg);
+        }
+
+        /* TRANSFER VIEW EXTRA CUSTOM STYLES */
+        .transfer-section-title {
+            width: 100%;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 20px 0 12px 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Balance Preview Panel */
+        .transfer-balance-card {
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 18px 22px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bal-details span {
+            font-size: 12px;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .bal-details h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .bal-badge {
+            background: rgba(22, 163, 74, 0.2);
+            color: #4ade80;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Recent Beneficiaries Horizontal Row */
+        .recent-beneficiaries {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            overflow-x: auto;
+            padding: 4px 4px 10px 4px;
+            box-sizing: border-box;
+        }
+
+        .recent-beneficiaries::-webkit-scrollbar {
+            display: none; /* Hide default scrollbar bar for clean mobile UI look */
+        }
+
+        .beneficiary-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .beneficiary-item .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.15s;
+        }
+
+        .beneficiary-item:active .avatar {
+            transform: scale(0.92);
+        }
+
+        .beneficiary-item .avatar.add-new {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: 2px dashed #d1d5db;
+        }
+
+        .beneficiary-item span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            max-width: 65px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Transfer Row Menu Items */
+        .transfer-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .transfer-option-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #efefef;
+            border-radius: 18px;
+            padding: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .transfer-option-card:active {
+            transform: scale(0.98);
+        }
+
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Custom color schema for different scopes */
+        .option-icon.local-bank { background: #fee2e2; color: #e62d2d; }
+        .option-icon.wallet-transfer { background: #dcfce7; color: #16a34a; }
+        .option-icon.international { background: #e0f2fe; color: #0284c7; }
+
+        /* Smooth border highlight specifically for the international selection card */
+        .transfer-option-card.international-highlight {
+            border: 1.5px solid #bae6fd;
+            background: linear-gradient(90deg, #ffffff 0%, #f0f9ff 100%);
+        }
+
+        .option-info {
+            flex-grow: 1;
+        }
+
+        .option-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .option-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .arrow-right {
+            color: #ccc;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        /* Badge Pills */
+        .option-tag {
+            position: absolute;
+            top: 14px;
+            right: 40px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .option-tag.free { background: #16a34a; color: white; }
+        .option-tag.global { background: #0284c7; color: white; }
+
+        /* FX Banner Ticker styling */
+        .fx-rate-banner {
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin-top: 16px;
+            box-sizing: border-box;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .ticker-content i {
+            color: #0284c7;
+            font-size: 13px;
+        }
+
+        /* INVESTMENT VIEW EXTRA CUSTOM STYLES */
+        .invest-section-title {
+            width: 100%;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 22px 0 12px 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Portfolio Header Summary Card */
+        .invest-summary-card {
+            width: 100%;
+            background: linear-gradient(135deg, #131313 0%, #2c2c35 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .invest-bal span {
+            font-size: 12px;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .invest-bal h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .invest-performance {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .invest-performance.positive {
+            background: rgba(22, 163, 74, 0.15);
+            color: #4ade80;
+        }
+
+        /* Layout Grid for Asset Options */
+        .invest-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .invest-asset-card {
+            display: flex;
+            align-items: flex-start;
+            background: #fff;
+            border: 1px solid #efefef;
+            border-radius: 18px;
+            padding: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .invest-asset-card:active {
+            transform: scale(0.98);
+        }
+
+        .asset-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Custom FinTech Color Coding Scheme for Investments */
+        .asset-icon.cash { background: #ecfdf5; color: #059669; }
+        .asset-icon.bonds { background: #f0fdf4; color: #16a34a; }
+        .asset-icon.local-stocks { background: #eff6ff; color: #2563eb; }
+        .asset-icon.global-stocks { background: #f8fafc; color: #475569; }
+        .asset-icon.property { background: #fff7ed; color: #ea580c; }
+        .asset-icon.commodities { background: #fefce8; color: #ca8a04; }
+
+        .asset-details {
+            flex-grow: 1;
+        }
+
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .asset-header h3 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        /* Risk Categorization Badges */
+        .asset-badge {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .asset-badge.low-risk { background: #dcfce7; color: #15803d; }
+        .asset-badge.med-risk { background: #fef3c7; color: #b45309; }
+        .asset-badge.high-risk { background: #fee2e2; color: #b91c1c; }
+
+        .asset-details p {
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .asset-meta {
+            font-size: 11px;
+            color: #444;
+            border-top: 1px dashed #f1f5f9;
+            padding-top: 6px;
+        }
+        
+        .asset-meta strong {
+            color: #111;
+        }
+
+        /* 100% Mobile Safe Slider Container */
+        .slider-container {
+            width: 100%;           
+            aspect-ratio: 1.58 / 1; /* Standard ID-1 Credit Card Aspect Ratio */
+            overflow: hidden;       
+            border-radius: 20px;    
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            touch-action: pan-y; /* Crucial: Allows native scrolling down while capturing side swipes */
+            perspective: 1000px; /* Gives 3D depth to the card flip */
+        }
+
+        .slider-track {
+            display: flex;
+            width: 200%;          
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+        }
+
+        /* 3D Flip Wrapper Container Elements */
+        .card-container {
+            width: 50%;
+            height: 100%;
+            flex-shrink: 0;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* JavaScript toggles this to turn card around */
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card, .card2, .card-back, .card-back2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; /* Standard trick to conceal inverse elements */
+            display: flex;
+            flex-direction: column;    
+            justify-content: space-between; 
+            padding: 0 20px;            
+            box-sizing: border-box;  
+        }
+
+        .card {
+            background: linear-gradient(to bottom, rgba(74, 59, 59, 0.85), rgba(230, 45, 45, 0.85)), url('img/world.png');
+            background-blend-mode: luminosity; 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card2 {
+            background: linear-gradient(to bottom, rgba(234, 198, 37, 0.85), rgba(75, 72, 72, 0.85)), url('img/mountain.png');
+            background-blend-mode: saturation; 
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Shared Rear Facing Styling rules */
+        .card-back{
+            transform: rotateY(180deg);
+            background: linear-gradient(to top, rgba(232, 139, 139, 0.85), rgba(241, 186, 108, 0.85));
+            color: #fff;
+            padding: 16px 0;
+            justify-content: flex-start;
+            gap: 12px;
+        }
+
+         .card-back2{
+            transform: rotateY(180deg);
+            background: linear-gradient(to top, rgba(80, 80, 72, 0.85), rgba(240, 179, 94, 0.85));
+            color: #fff;
+            padding: 16px 0;
+            justify-content: flex-start;
+            gap: 12px;
+        }
+        
+
+
+        /* Back Card Structural Sub-Elements */
+        .magnetic-strip {
+            width: 100%;
+            height: 35px;
+            background: #111;
+        }
+
+        .signature-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+            gap: 10px;
+        }
+
+        .signature-box {
+            flex: 1;
+            height: 30px;
+            background: repeating-linear-gradient(45deg, #e4e4e4, #e4e4e4 5px, #ffffff 5px, #ffffff 10px);
+            border-radius: 3px;
+        }
+
+        .cvv-indicator {
+            background: #fff;
+            color: #000;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            font-style: italic;
+            padding: 4px 10px;
+            border-radius: 3px;
+        }
+
+        .disclaimer-text {
+            font-size: 8px;
+            line-height: 1.3;
+            width: 90%;
+            margin: 8px auto 0 auto;
+            opacity: 0.6;
+            font-family: sans-serif;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;            
+        }
+
+        .deb {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            opacity: 0.8;
+            margin-left: 9.5px;
+        }
+
+        .logo img {
+            width: 70px;
+            height: auto;
+            object-fit: contain;
+            margin-right: -20px;
+            opacity: 0.9;
+        }
+
+        .card-mid {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: -45px;
+        }
+
+        .card-chip {
+            width: 60px;               
+            height: auto;
+            border-radius: 4px;
+            opacity: 0.85;        
+        }
+
+        @media (min-width: 480px) {
+            .card-chip {
+                width: 80px;
+            }
+        }
+
+        .card-wave {
+           width: 18px;
+           height: auto; 
+           opacity: 0.8;
+        }
+
+        /* Fluidly scales numbers without wrapping into two lines */
+        .card-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 6vw; 
+            letter-spacing: 1.5px;
+            text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5); 
+            font-weight: 500;
+            color: rgb(0, 0, 0);
+            white-space: nowrap;
+            opacity: 0.8;
+        }
+
+        .card-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+        }
+
+        .card-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.9;
+            color: white;
+            margin-bottom: 10px;
+            margin-top: -10px;
+        }
+
+        .card-name-text {
+            font-size: 4.5vw;
+            font-weight: 500; 
+            color: white;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Cap maximum font sizing thresholds on standard viewports */
+        @media (min-width: 480px) {
+            .card-number { font-size: 30px;   }
+            .card-name-text { font-size: 18px; }
+            .deb{ margin-left: 20px; }
+            .master{ width: 150px;}
+            .visa{width: 150px;}
+        }
+
+        .master {
+            width: 70px;
+            height: auto;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+
+        .visa{
+            width: 67px;
+            height: auto;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+
+        .slider-buttons {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .slider-buttons button {
+            padding: 6px 14px;
+            cursor: pointer;
+            background: #f2f2f2;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .sub-title {
+            width: 100%;
+            line-height: 1.2;
+            margin-top: 20px;
+        }
+
+        .sub-title h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+        }
+        
+        .features-section {
+            width: 100%;                   
+        }
+
+        .sub-topic {
+            display: flex;
+            align-items: center;
+            gap: 12px;                      
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            color: #131313;                 
+        }
+
+        .sub-topic .icon {
+            font-size: 18px;
+            color: #e62d2d;
+            width: 24px;
+            text-align: center;
+        }
+
+        .feature-description, .feature-list {
+            font-size: 14.5px;
+            color: #2c2c2c;
+            line-height: 1.5;
+            margin: 6px 0 0 36px;           
+        }
+
+        .feature-list { padding-left: 20px; }
+        .feature-list li { margin-bottom: 4px; }
+
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 2000;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        .footer-nav::before {
+            content: "";
+            position: absolute;
+            bottom: 0; 
+            left: 0;
+            width: 100%;
+            height: 60px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            mask-image: linear-gradient(to top, black, transparent);
+            -webkit-mask-image: linear-gradient(to top, black, transparent);
+            z-index: -1; 
+        }
+
+        .tabs { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px 4px;
+            width: 100%;
+            background: rgb(243, 240, 240); 
+            border: 1.5px solid rgb(96, 95, 95);
+            border-radius: 100px;
+            pointer-events: auto; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 10px; 
+        }
+
+        .tab-button { 
+            background: none; 
+            border: none; 
+            color: rgb(77, 76, 76); 
+            text-align: center; 
+            flex: 1; 
+            cursor: pointer; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .tab-button.active i { color: #e62d2d; }
+        .tab-button i { font-size: 25px; }
+        .tab-button span { font-size: 10px; font-weight: 500; }
+
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div id="homeView" class="tab-view active-view">
+            <div class="welcome-section">
+                <div class="user-info">
+                    <h2>Welcome back,</h2>
+                    <h1>Thomas O. Ahanenu</h1>
+                    <span>8154678592</span>
+                </div>
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="balance-card">
+                <span class="balance-label">Total Portfolio Balance</span>
+                <div class="balance-amount">₦2,450,800.00 <i class="fa-regular fa-eye-slash"></i></div>
+                <div class="balance-meta">
+                    <div class="meta-item">
+                        <span>Available Cash</span>
+                        <strong>₦450,800.00 <i class="fa-regular fa-eye-slash"></i></strong>
+                    </div>
+                    <div class="meta-item">
+                        <span>Investments</span>
+                        <strong>₦2,000,000.00 <i class="fa-regular fa-eye-slash"></i></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions-grid">
+                <div class="action-item" onclick="switchTab(1)">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Buy</span>
+                </div>
+                <div class="action-item" onclick="switchTab(2)">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span>Transfer</span>
+                </div>
+                <div class="action-item" onclick="switchTab(3)">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>Invest</span>
+                </div>
+                <div class="action-item" onclick="switchTab(4)">
+                    <i class="fa-regular fa-credit-card"></i>
+                    <span>Cards</span>
+                </div>
+
+                <div class="action-item">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+
+            </div>
+
+            <div class="section-header">
+                <h3>Recent Activities</h3>
+                <a href="#">See All</a>
+            </div>
+
+            <div class="recent-transactions">
+                <div class="transaction-card">
+                    <div class="tx-left">
+                        <div class="tx-icon"><i class="fa-solid fa-shopping-bag"></i></div>
+                        <div class="tx-details">
+                            <p>Netflix Subscription</p>
+                            <span>Today, 10:24 AM</span>
+                        </div>
+                    </div>
+                    <div class="tx-right">
+                        <p class="tx-amount">-₦4,400.00</p>
+                    </div>
+                </div>
+
+                <div class="transaction-card">
+                    <div class="tx-left">
+                        <div class="tx-icon income"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="tx-details">
+                            <p>Funds Deposit</p>
+                            <span>Yesterday, 4:15 PM</span>
+                        </div>
+                    </div>
+                    <div class="tx-right">
+                        <p class="tx-amount positive">+₦150,000.00</p>
+                    </div>
+                </div>
+
+                <div class="transaction-card">
+                    <div class="tx-left">
+                        <div class="tx-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="tx-details">
+                            <p>Electricity Token</p>
+                            <span>14 June, 2:40 PM</span>
+                        </div>
+                    </div>
+                    <div class="tx-right">
+                        <p class="tx-amount">-₦10,000.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1: BUY VIEW -->
+        <div id="buyView" class="tab-view">
+            <div class="page-header">
+                <h1 class="page-title">Bills & Services</h1>
+                <button class="menu-btn">
+                    <i class="fa-solid fa-clock-history"></i>
+                </button>
+            </div>
+
+            <!-- Search/Filter Bar -->
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for bills, utilities or services...">
+            </div>
+
+            <!-- SECTION 1: CORE TELECOM & DATA -->
+            <div class="buy-section-title">Telecom Services</div>
+            <div class="services-grid">
+                <div class="service-item" onclick="handleServiceClick('Airtime')">
+                    <div class="service-icon telecom"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <span>Airtime</span>
+                    <span class="service-tag bonus">Up to 10% Off</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Data')">
+                    <div class="service-icon telecom"><i class="fa-solid fa-network-wired"></i></div>
+                    <span>Data Bundle</span>
+                    <span class="service-tag">Instant</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('International Airtime')">
+                    <div class="service-icon telecom"><i class="fa-solid fa-globe"></i></div>
+                    <span>Int'l Airtime</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Airtime to Cash')">
+                    <div class="service-icon telecom"><i class="fa-solid fa-money-bill"></i></div>
+                    <span>Airtime to Cash</span>
+                </div>
+            </div>
+
+            <!-- SECTION 2: UTILITIES & TV -->
+            <div class="buy-section-title">Utilities & Entertainment</div>
+            <div class="services-grid">
+                <div class="service-item" onclick="handleServiceClick('Electricity')">
+                    <div class="service-icon utility"><i class="fa-solid fa-bolt"></i></div>
+                    <span>Electricity</span>
+                    <span class="service-tag popular">Popular</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('TV Cable')">
+                    <div class="service-icon utility"><i class="fa-solid fa-tv"></i></div>
+                    <span>TV Cable</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Internet Fiber')">
+                    <div class="service-icon utility"><i class="fa-solid fa-wifi"></i></div>
+                    <span>Broadband</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Water Bill')">
+                    <div class="service-icon utility"><i class="fa-solid fa-water"></i></div>
+                    <span>Water</span>
+                </div>
+            </div>
+
+            <!-- SECTION 3: LIFESTYLE & FINANCE -->
+            <div class="buy-section-title">Finance & Lifestyle</div>
+            <div class="services-grid">
+                <div class="service-item" onclick="handleServiceClick('Betting Funding')">
+                    <div class="service-icon lifestyle"><i class="fa-solid fa-dice"></i></div>
+                    <span>Betting Wallet</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Gift Cards')">
+                    <div class="service-icon lifestyle"><i class="fa-solid fa-gift"></i></div>
+                    <span>Gift Cards</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Insurance')">
+                    <div class="service-icon lifestyle"><i class="fa-solid fa-user-shield"></i></div>
+                    <span>Insurance</span>
+                </div>
+                <div class="service-item" onclick="handleServiceClick('Exam Scratchcards')">
+                    <div class="service-icon lifestyle"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <span>Exam Pins</span>
+                </div>
+            </div>
+
+            <!-- Promo Banner Container mimicking PalmPay's reward schemes -->
+            <div class="promo-banner-card">
+                <div class="promo-info">
+                    <h4>EfxPay Rewards Club</h4>
+                    <p>Earn points on every single bill payment to unlock free transaction coupons.</p>
+                </div>
+                <i class="fa-solid fa-trophy promo-illustration"></i>
+            </div>
+        </div>
+        
+        <div id="transferView" class="tab-view">
+            <div class="page-header">
+                <h1 class="page-title">Transfer</h1>
+            </div>
+            <div class="transfer-balance-card">
+                <div class="bal-details">
+                    <a href="ATM CARD.html" style="text-decoration: none; color: white;">
+                    <span>Available Balance</span>
+                    <h2>₦450,500.00</h2>
+                </div></a>
+                <div class="bal-badge">
+                    <i class="fa-solid fa-shield"></i> Secure
+                </div>
+            </div>
+
+            <div class="transfer-section-title">Recent Beneficiaries</div>
+            <div class="recent-beneficiaries">
+                <div class="beneficiary-item" onclick="handleTransferAction('Recent: Thomas')">
+                    <div class="avatar">TO</div>
+                    <span>Thomas O.</span>
+                </div>
+                <div class="beneficiary-item" onclick="handleTransferAction('Recent: Emmanuel')">
+                    <div class="avatar" style="background: #eff6ff; color: #2563eb;">EI</div>
+                    <span>Emmanuel</span>
+                </div>
+                <div class="beneficiary-item" onclick="handleTransferAction('Recent: Helen')">
+                    <div class="avatar" style="background: #f3e8ff; color: #9333ea;">HA</div>
+                    <span>Helen A.</span>
+                </div>
+                <div class="beneficiary-item" onclick="handleTransferAction('New Beneficiary')">
+                    <div class="avatar add-new"><i class="fa-solid fa-plus"></i></div>
+                    <span>Add New</span>
+                </div>
+            </div>
+
+            <div class="transfer-section-title">Send Money</div>
+            <div class="transfer-grid">
+                <div class="transfer-option-card" onclick="handleTransferAction('Local Bank Transfer')">
+                    <div class="option-icon local-bank">
+                        <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <div class="option-info">
+                        <h3>To Bank Account</h3>
+                        <p>Send to Zenith, GTB, Access & others</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-right"></i>
+                </div>
+
+                <div class="transfer-option-card" onclick="handleTransferAction('Wallet Transfer')">
+                    <div class="option-icon wallet-transfer">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="option-info">
+                        <h3>To EfxPay Wallet</h3>
+                        <p>Free & instant using phone number</p>
+                    </div>
+                    <span class="option-tag free">FREE</span>
+                    <i class="fa-solid fa-chevron-right arrow-right"></i>
+                </div>
+
+                <div class="transfer-option-card international-highlight" onclick="handleTransferAction('International Transfer')">
+                    <div class="option-icon international">
+                        <i class="fa-solid fa-earth-africa"></i>
+                    </div>
+                    <div class="option-info">
+                        <h3>Send Internationally</h3>
+                        <p>Transfer to USA, UK, Europe, & across Africa</p>
+                    </div>
+                    <span class="option-tag global">GLOBAL</span>
+                    <i class="fa-solid fa-chevron-right arrow-right"></i>
+                </div>
+            </div>
+
+            <div class="fx-rate-banner">
+                <div class="ticker-content">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Today's Real-time FX Rates: <strong>1 USD = Live Rate</strong> | Low conversion fees applied.</span>
+                </div>
+            </div>
+        </div> 
+
+        <div id="investmentView" class="tab-view">
+            <div class="page-header">
+                <h1 class="page-title">Stocks</h1>
+            </div>
+            <!-- Investment Portfolio Summary -->
+            <div class="invest-summary-card">
+                <div class="invest-bal">
+                    <span>Active Investments</span>
+                    <h2>₦2,000,000.00</h2>
+                </div>
+                <div class="invest-performance positive">
+                    <i class="fa-solid fa-arrow-trend-up"></i> +12.4% YTD
+                </div>
+            </div>
+
+            <!-- ASSET CLASS 1: FIXED INCOME & LOW RISK -->
+            <div class="invest-section-title">Fixed Income (Low Risk)</div>
+            <div class="invest-grid">
+                <!-- High-Yield Savings / Flexi Wealth -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('High-Yield Cash')">
+                    <div class="asset-icon cash"><i class="fa-solid fa-money-bill-growth"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>Flexi Wealth Savings</h3>
+                            <span class="asset-badge low-risk">Low Risk</span>
+                        </div>
+                        <p>Lock funds or save flexibly with daily returns</p>
+                        <div class="asset-meta">
+                            <span>Est. Yield: <strong>Up to 16% APY</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Treasury Bills / Fixed Deposit -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('Fixed Income / T-Bills')">
+                    <div class="asset-icon bonds"><i class="fa-solid fa-landmark"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>Treasury Bills & Bonds</h3>
+                            <span class="asset-badge low-risk">Guaranteed</span>
+                        </div>
+                        <p>Government-backed secure fixed income assets</p>
+                        <div class="asset-meta">
+                            <span>Est. Yield: <strong>18.5% APY</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASSET CLASS 2: EQUITIES & STOCKS -->
+            <div class="invest-section-title">Equities & Markets (Medium-High Risk)</div>
+            <div class="invest-grid">
+                <!-- Nigerian Stocks -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('Local Stocks')">
+                    <div class="asset-icon local-stocks"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>NGN Stocks (NGX)</h3>
+                            <span class="asset-badge med-risk">Medium Risk</span>
+                        </div>
+                        <p>Invest in top performing local companies & dividends</p>
+                        <div class="asset-meta">
+                            <span>Market Status: <strong style="color: #16a34a;">Open</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- US / Global Stocks -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('US Stocks')">
+                    <div class="asset-icon global-stocks"><i class="fa-solid fa-globe"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>US Dollar Stocks</h3>
+                            <span class="asset-badge high-risk">High Risk</span>
+                        </div>
+                        <p>Buy shares of global tech giants (Apple, Tesla, NVIDIA)</p>
+                        <div class="asset-meta">
+                            <span>Currency: <strong>USD ($)</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASSET CLASS 3: ALTERNATIVE ASSETS -->
+            <div class="invest-section-title">Alternative Investments</div>
+            <div class="invest-grid" style="margin-bottom: 30px;">
+                <!-- Real Estate Fractional Core -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('Real Estate Fractional')">
+                    <div class="asset-icon property"><i class="fa-solid fa-hotel"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>Fractional Real Estate</h3>
+                            <span class="asset-badge med-risk">Medium Risk</span>
+                        </div>
+                        <p>Co-invest in high-value commercial & residential property</p>
+                        <div class="asset-meta">
+                            <span>Est. Return: <strong>22% ROI</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agro/Commodity Partnerships -->
+                <div class="invest-asset-card" onclick="handleInvestmentClick('Commodities / Agriculture')">
+                    <div class="asset-icon commodities"><i class="fa-solid fa-wheat-awn"></i></div>
+                    <div class="asset-details">
+                        <div class="asset-header">
+                            <h3>Agriculture & Commodities</h3>
+                            <span class="asset-badge high-risk">High Risk</span>
+                        </div>
+                        <p>Fund agricultural value chains & trade commodities</p>
+                        <div class="asset-meta">
+                            <span>Duration: <strong>6 - 12 Months</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cardView" class="tab-view">
+            <div class="page-header">
+                <h1 class="page-title">My Digital Card</h1>
+                <button class="menu-btn">
+                    <i class="fa-solid fa-ellipsis"></i>
+                </button>
+            </div>
+            <div class="slider-container" id="sliderContainer">
+                <div class="slider-track" id="cardTrack">
+                    
+                    <div class="card-container" onclick="toggleFlip(this)">
+                        <div class="card-inner">
+                            <div class="card">
+                                <div class="card-top">
+                                    <p class="deb">debit</p>
+                                    <div class="logo">            
+                                        <img src="img/Efxpay.png" alt="Zlogo">
+                                    </div>
+                                </div>  
+                                <div class="card-mid">
+                                    <img src="img/chip.jpg" alt="chip" class="card-chip">
+                                    <img src="img/wave.png" alt="wave" class="card-wave">
+                                </div>
+                                <div class="card-number">
+                                    <span>4219 &nbsp;4238 &nbsp;0943 &nbsp;2363</span>
+                                </div>
+                                <br>
+                                <div class="card-bottom-row">
+                                    <div>
+                                        <div class="card-date">
+                                            <span style="font-family: Arial; font-weight: bold; font-size: 7px; line-height: 9px; opacity: 0.7; color: #000;">VALID<br>THRU</span>
+                                            <span style="font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: 600; color: #000;">03/27</span>
+                                        </div>
+                                        <div class="card-name-text" style="color:#000;">THOMAS O. AHANENU</div>
+                                    </div>
+                                    <img src="img/mastercard.png" alt="mastercard" class="master">
+                                </div>
+                                <br>
+                            </div>
+                            <div class="card-back">
+                                <div class="magnetic-strip"></div>
+                                <div class="signature-row">
+                                    <div class="signature-box"></div>
+                                    <div class="cvv-indicator">834</div>
+                                </div>
+                                <p class="disclaimer-text">
+                                    support@efxpay.com <br>
+                                    www.efxpay.com <br>
+                                    Issued by EfxPay Financial Services<br>
+                                    This card is property of EfxPay. If found, please return to any nearest branch office. Authorized signature is required.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-container" onclick="toggleFlip(this)">
+                        <div class="card-inner">
+                            <div class="card2">
+                                <div class="card-top">
+                                    <p class="deb">credit</p>
+                                    <div class="logo">            
+                                        <img src="img/Efxpay.png" alt="Zlogo">
+                                    </div>
+                                </div>  
+                                <div class="card-mid">
+                                    <img src="img/chip.jpg" alt="chip" class="card-chip">
+                                    <img src="img/wave.png" alt="wave" class="card-wave">
+                                </div>
+                                <div class="card-number">
+                                    <span style="color:rgb(226, 227, 230); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);">5123 &nbsp;4567 &nbsp;8901 &nbsp;2345</span>
+                                </div>
+                                <br>
+                                 <div class="card-bottom-row">
+                                    <div>
+                                        <div class="card-date">
+                                            <span style="font-family: Arial; font-weight: bold; font-size: 7px; line-height: 9px; opacity: 0.7;">VALID<br>THRU</span>
+                                            <span style="font-family: 'Courier New', Courier, monospace; font-size: 16px; font-weight: 600;">03/27</span>
+                                        </div>
+                                        <div class="card-name-text">THOMAS O. AHANENU</div>
+                                    </div>
+                                    <img src="img/Visa.png" alt="mastercard" class="visa">
+                                </div>
+                                <br>
+                            </div>
+                            <div class="card-back2">
+                                <div class="magnetic-strip"></div>
+                                <div class="signature-row">
+                                    <div class="signature-box"></div>
+                                    <div class="cvv-indicator">192</div>
+                                </div>
+                                <p class="disclaimer-text">
+                                    support@efxpay.com <br>
+                                    www.efxpay.com <br>
+                                    Issued by EfxPay Finicial Services pursuant to licence from Visa International Service Association. For customer service call global hotlines.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="slider-buttons">
+                <button onclick="changeSlide(0)" id="prevBtn" style="display: none;">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="changeSlide(1)" id="nextBtn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="sub-title">
+                <h1>EfxPay Card <br> <span style="color: #e62d2d;">Built for Your Digital life</span></h1>
+            </div>
+
+            <div class="features-section">
+                <div class="sub-topic">
+                    <i class="fa-solid fa-globe icon"></i>
+                    <span>Shop Globally</span>
+                </div>
+                <p class="feature-description">
+                    Use your EfxPay Card for online purchases anywhere Mastercard and Visa cards are accepted.
+                </p>
+
+                <div class="sub-topic">
+                    <i class="fa-solid fa-naira-sign icon"></i>
+                    <span>NGN Card Fees</span>
+                </div>
+                <ul class="feature-list">
+                    <li>NGN 5 non-refundable card creation fee</li>
+                    <li>No hidden maintenance charges</li>
+                </ul>
+
+                <div class="sub-topic">
+                    <i class="fa-solid fa-arrow-trend-up icon"></i>
+                    <span>Higher Transaction Limit</span>
+                </div>
+                <p class="feature-description">
+                    Access to higher transaction limits than the NGN card.
+                </p>
+
+                <div class="sub-topic">
+                    <i class="fa-regular fa-clock icon"></i>
+                    <span>Budget Effectively</span>
+                </div>
+                <p class="feature-description">
+                    Limit spending by only using the amount uploaded to your card.
+                </p>   
+
+                <div class="sub-topic">
+                    <i class="fa-solid fa-mobile-screen-button icon"></i>
+                    <span>Digital Native</span>
+                </div>
+                <p class="feature-description">
+                    A digital card for your digital life.
+                </p> 
+
+                <div class="sub-topic">
+                    <i class="fa-solid fa-repeat icon"></i>
+                    <span>Currency Conversion</span>
+                </div>
+                <p class="feature-description">
+                    Conversion from NGN to USD at lowest rates.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-nav">
+        <div class="tabs" id="tabBarContainer">
+            <button class="tab-button active" onclick="switchTab(0)">
+                <i class="fa-brands fa-gg-circle"></i>
+                <span>Home</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(1)">
+                <i class="fa-solid fa-store"></i>
+                <span>Buy</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(2)">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                <span>Transfer</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(3)">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <span>Investment</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(4)">
+                <i class="fa-regular fa-credit-card"></i>
+                <span>Card</span>
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        const track = document.getElementById('cardTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const container = document.getElementById('sliderContainer');
+        
+        let currentSlide = 0;
+        let startX = 0;
+        let changeX = 0;
+
+        // Dynamic Tab Switching Handler
+        function switchTab(tabIndex) {
+            const tabs = document.querySelectorAll('#tabBarContainer .tab-button');
+            const views = [
+                document.getElementById('homeView'),
+                document.getElementById('buyView'),
+                document.getElementById('transferView'),
+                document.getElementById('investmentView'),
+                document.getElementById('cardView')
+            ];
+
+            tabs.forEach((tab, index) => {
+                if(index === tabIndex) {
+                    tab.classList.add('active');
+                    if(views[index]) views[index].classList.add('active-view');
+                } else {
+                    tab.classList.remove('active');
+                    if(views[index]) views[index].classList.remove('active-view');
+                }
+            });
+
+            // Scroll window smoothly to the top when swapping views
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Horizontal Slide Animation Controller
+        function changeSlide(index) {
+            currentSlide = index;
+            // Shift layout track by percentages inside responsive widths
+            track.style.transform = `translateX(-${currentSlide * 50}%)`;
+
+            if (currentSlide === 1) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                prevBtn.style.display = 'none';
+            }
+        }
+
+        // 3D Card Flipping Logic
+        function toggleFlip(containerElement) {
+            const innerCard = containerElement.querySelector('.card-inner');
+            innerCard.classList.toggle('flipped');
+        }
+
+        // Touch Interaction Handles (Mobile Swipe Gestures)
+        container.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        container.addEventListener('touchmove', (e) => {
+            changeX = startX - e.touches[0].clientX;
+        }, { passive: true });
+
+        container.addEventListener('touchend', () => {
+            // Check threshold for valid swipe triggers (50px min)
+            if (Math.abs(changeX) > 50) {
+                if (changeX > 0 && currentSlide === 0) {
+                    changeSlide(1); // Swiped Left -> Next Card
+                } else if (changeX < 0 && currentSlide === 1) {
+                    changeSlide(0); // Swiped Right -> Previous Card
+                }
+            }
+            // Reset positional changes
+            changeX = 0;
+        });
+    </script>
+</body>    
+</html>
